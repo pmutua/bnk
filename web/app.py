@@ -239,9 +239,25 @@ class PayLoan(Resource):
 
         cash = casWithUser(username)
 
+        if cash < money:
+            return jsonify(generateReturnDictionary(303,"Not enough cash in your account"))
+              
+
         debt = debtWithUser(username)
 
         updateAccount(username,cash-money)
         updateDebt(username,debt-money)
 
-        return jsonify(generateReturnDictionary(200,"Loan added to your Account"))
+        return jsonify(generateReturnDictionary(200,"You have successfully paid your loan."))
+
+
+
+api.add_resource(Register,'/register')
+api.add_resource(Register,'/add')
+api.add_resource(Register,'/transfer')
+api.add_resource(Register,'/balance')
+api.add_resource(Register,'/takeloan')
+api.add_resource(Register,'/payloan')
+
+if __name__=="__main__":
+    app.run(host='0.0.0.0')
