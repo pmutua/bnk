@@ -119,7 +119,7 @@ class Add(Resource):
 
         username = postedData["username"]
         password = postedData["password"]
-        amount = postedData["amount"]
+        money = postedData["amount"]
 
 
         retJson , error = verifyCredentials(username,password)
@@ -130,6 +130,7 @@ class Add(Resource):
         if money==0:
             return jsonify(generateReturnDictionary(304,"The money amount entered must be greater than 0"))
 
+        # Bank will deduct transaction fee
         cash = casWithUser(username)
         # deduct transaction fee
         money-=1
@@ -166,6 +167,7 @@ class Transfer(Resource):
 
         cash_to = casWithUser(to)
         bank_cash = casWithUser("BANK")
+
 
         updateAccount("BANK",bank_cash+1)
 
