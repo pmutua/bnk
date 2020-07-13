@@ -94,3 +94,20 @@ def verifyCredentials(username, password):
     return None, False
 
 
+def updateAccount(username,balance):
+    users.update({
+        "Username": username
+    },{
+        "$set":{
+            "Own": balance
+        }
+    })
+
+def updateDebt(username,balance):
+    users.update({
+        "Username": username
+    },{
+        "$set":{
+            "Debt": balance
+        }
+    })
