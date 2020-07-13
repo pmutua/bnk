@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_restful import APi, Resource 
+from flask_restful import Api, Resource 
 from pymongo import MongoClient 
 import bcrypt 
 import requests
@@ -127,7 +127,7 @@ class Add(Resource):
         if error:
             return jsonify(retJson)
 
-        if money=-0:
+        if money==0:
             return jsonify(generateReturnDictionary(304,"The money amount entered must be greater than 0"))
 
         cash = casWithUser(username)
@@ -140,3 +140,37 @@ class Add(Resource):
 
         return jsonify(generateReturnDictionary(200,"Amount added successfully to Account."))
 
+class Transfer(Resource):
+    def post(self):
+        postedData = request.get_json()
+        username = postedData["username"]
+        password = postedData["password"]
+        to = postedData["to"]
+        money = postedData["password"]
+
+
+        returnJson, error = verifyCredentials(username,password)
+
+        if error:
+            return jsonify(returnJson)
+
+        cash = casWithUser(username)
+        if cash<=0:
+            return jsonify(generateReturnDictionary(304,"You are out of money, please add or take a loan"))
+        
+        if not UserExists(to):
+            return jsonify(generateReturnDictionary(301, "Receiver username is invalid"))
+
+
+        cash_from = casWithUser(username)
+
+        cash_to = casWithUser(to)
+        bank_cash = casWithUser("BANK")
+
+        updateAccount("BANK",bank_cash+1)
+
+        updateAccount(to,cash_to+money-1)
+
+        updateAccount(username,cash_from-money)
+
+        return jsonify(generateReturnDictionary(200, "Amount transfered succesfully"))
