@@ -33,7 +33,7 @@ class Register(Resource):
             }
             return jsonify(retJson)
 
-        hashed_pw = bcrypt.hashpwd(password.encode("utf8"),bcrypt.gensalt())
+        hashed_pw = bcrypt.hashpw(password.encode("utf8"),bcrypt.gensalt())
 
         users.insert({
             "Username": username,
