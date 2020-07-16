@@ -2,5 +2,5 @@ Create bank account first
 
 {
     "username": "BANK",
-    "password": "secure"
+    "password": "XXXXX"
 }
